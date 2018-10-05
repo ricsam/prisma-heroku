@@ -20,6 +20,13 @@ This repository showcases how to deploy Prisma to Heroku.
     1. It takes the Prisma docker image as a base and adds a prerun hook that renders the Prisma config required to run the app, and adds a CMD docker directive to the image that Heroku requires all images to have.
     1. It tags the image correctly for the Heroku registry and pushes it.
     1. **This does NOT deploy the app.**
+    
+
+1. Optionally you can use Heroku Postgres for your database. If you would like to use Heroku to manage your Postgres database, first
+    1. Create a new Postgres instance with: `heroku addons:create heroku-postgresql:hobby-dev -a <your_app_name>`
+    1. Get the connection string for your new database: `heroku config -a <your_app_name>`
+    1. Then you can extract the details for the next step from that string in the form `postgres://<DB_USER>:<DB_PASSWORD>@<DB_HOST>/<DB_NAME>`
+    
 1. Now we need to configure the env vars:
     1. Either set them one by one via the CLI with `heroku config:set <key>=<value> -a <your_app_name>`...
     1. ...or navigate to the web interface and set them under `settings`
@@ -28,6 +35,7 @@ This repository showcases how to deploy Prisma to Heroku.
         1. `DB_PASSWORD` to your database password
         1. `DB_PORT` to your database port
         1. `DB_USER` to your database user
+        1. `DB_HOST` to your database name
         1. `PRISMA_CONFIG_PATH` to `/app/config.yml`
     1. **Note**: This example repo uses PostgreSQL. To change that, simply change the `connector: postgres` to `connector: mysql` in `prerun_hook.sh`.
 1. Finally, deploy the app with `heroku container:release web -a <your_app_name>`
