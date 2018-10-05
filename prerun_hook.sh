@@ -10,7 +10,7 @@ databases:
     connector: postgres
     host: ${DB_HOST}
     port: ${DB_PORT}
-    database: prisma
+    database: ${DB_NAME}
     schema: public
     user: ${DB_USER}
     password: ${DB_PASSWORD}
